@@ -1,28 +1,39 @@
 <?php
+$username = "Test";
+$password = "123";
+$exp = time() + ((60*60*24)*7);
+$path = "./";
 
-//fictief voorbeeld: systeem met 1 gebruiker. Gebruikers komen normaal uit de database, password encrypted
-$username = 'Koen';
-$password = 123;
+if(isset($_COOKIE['logged_in'])&& $_COOKIE['logged_in'] == 1)
+{
+    echo "Welkom " . $_COOKIE['user'];
+}elseif(isset($_POST['name'])&& isset($_POST['pass']))
+{
+    if($_POST['name'] == $username && $_POST['pass'] == $password){
 
-?>
+        setcookie('logged_in', '1' , $exp, $path);
+        setcookie('user', $_POST['name'], $exp, $path);
 
-<?php
-session_start();
-if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == 1) {
-
-    echo 'Hello ' . $_SESSION['user'];
-} elseif (isset($_POST['username']) && isset($_POST['password'])) {
-    if ($_POST['username'] == $username && $_POST['password'] == $password) {
-
-        $_SESSION['user'] = $_POST['username'];
-        $_SESSION['logged_in'] = true;
-    } else {
+        echo "Welcome " . $_COOKIE['user'];
+    }else{
         echo '<form method="post">
-        <input type="text" name="username" required="required"></br>
-        <input type="text" name="password" required="required"></br>
-        <input type="submit" value="GO">
-        </form>';
+                <input type="text" name="name" placeholder="Naam">
+                <input type="password" name="pass" placeholder="Wachtwoord">
+                <input type="submit">
+            </form>';
     }
+
+
+}else{
+    echo '<form method="post">
+                <input type="text" name="name" placeholder="Naam">
+                <input type="password" name="pass" placeholder="Wachtwoord">
+                <input type="submit">
+           </form>';
 }
-echo "<h3>Inlog: Koen wachtwoord: 123</h3>"
 ?>
+
+<html>
+<p>User: Test <br>
+    Wachtwoord: 123</p>
+</html>
